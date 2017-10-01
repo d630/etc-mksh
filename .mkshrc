@@ -1,0 +1,57 @@
+#!/usr/bin/env mksh
+#
+# Sourced via ENV
+
+[[ $- == *i* ]] ||
+    return 1;
+
+if
+    ((USER_ID));
+then
+    PS1='% ';
+else
+    PS1='# ';
+fi;
+
+PS2='> ';
+PS4='[$EPOCHREALTIME] ';
+
+HOSTNAME=$(hostname -s 2>/dev/null);
+[[ $HOSTNAME == *([	 ]|localhost) ]] &&
+    HOSTNAME=$(hostname 2>/dev/null);
+export HOSTNAME;
+
+export MKSH=$(whence -p mksh);
+export SHELL=$MKSH;
+export HISTFILE=${XDG_VAR_HOME}/spool/mksh_history;
+export HISTSIZE=10000;
+
+function up {
+    if
+        [[ -z ${1//[0-9]/} ]];
+    then
+        typeset s=$(printf '%*s' ${1:-1} '');
+        builtin cd -- ${s// /..\/} &&
+            print "cd -- $PWD";
+    else
+        print "Usage: up [<INT>]" 1>&2;
+        return 1;
+    fi;
+};
+
+stty -ixon -ctlecho;
+tabs -4;
+
+set -o emacs;
+
+. "$HOME/".profile.d/ext.sh;
+. "$HOME/".profile.d/base.sh;
+. "$HOME/".profile.d/run.sh;
+
+\ProfileRcBaseAlias;
+
+\ProfileRcRunGpg 1>/dev/null;
+\ProfileRcRunKeychainInteractiv;
+\ProfileRcRunLsSet;
+
+# vim: set ts=4 sw=4 tw=0 et :
