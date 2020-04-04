@@ -44,6 +44,18 @@ tabs -4;
 
 set -o emacs;
 
+alias 'autoload=\\builtin typeset -fu'
+alias 'functions=\\builtin typeset -f'
+alias 'hash=\\builtin alias -t'
+alias 'history=\\builtin fc -l'
+alias 'integer=\\builtin typeset -i'
+alias 'local=\\builtin typeset'
+alias 'login=\\builtin exec login'
+alias 'nameref=\\builtin typeset -n'
+alias 'nohup=nohup '
+alias 'r=\\builtin fc -e -'
+alias 'type=\\builtin whence -v'
+
 . "$HOME/".profile.d/ext.sh;
 . "$HOME/".profile.d/base.sh;
 . "$HOME/".profile.d/run.sh;
