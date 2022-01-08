@@ -3,40 +3,36 @@
 # Sourced via ENV
 
 [[ $- == *i* ]] ||
-	return 1;
+    return 1
 
-if
-	((USER_ID));
-then
-	PS1='% ';
+if ((USER_ID)); then
+    PS1='% '
 else
-	PS1='# ';
-fi;
+    PS1='# '
+fi
 
-PS2='> ';
-PS4='[$EPOCHREALTIME] ';
+PS2='> '
+PS4='[$EPOCHREALTIME] '
 
-export MKSH=$(whence -p mksh);
-export HISTFILE=${XDG_VAR_HOME}/spool/mksh_history;
-export HISTSIZE=10000;
+export MKSH=$(whence -p mksh)
+export HISTFILE=${XDG_VAR_HOME:?}/spool/mksh_history
+export HISTSIZE=10000
 
-function up {
-	if
-		[[ -z ${1//[0-9]/} ]];
-	then
-		typeset s=$(printf '%*s' ${1:-1} '');
-		builtin cd -- ${s// /..\/} &&
-			print "cd -- $PWD";
-	else
-		print "Usage: up [<INT>]" 1>&2;
-		return 1;
-	fi;
-};
+up() {
+    if [[ -z ${1//[0-9]/} ]]; then
+        typeset s=$(printf '%*s' ${1:-1} '')
+        builtin -- cd -- ${s// /..\/} &&
+            print "cd -- $PWD"
+    else
+        print "Usage: up [<INT>]" 1>&2
+        return 1
+    fi
+}
 
-stty -ixon -ctlecho;
-tabs -4;
+stty -ixon -ctlecho
+tabs -4
 
-set -o emacs;
+set -o emacs
 
 alias 'autoload=\\builtin typeset -fu'
 alias 'functions=\\builtin typeset -f'
@@ -50,14 +46,14 @@ alias 'nohup=nohup '
 alias 'r=\\builtin fc -e -'
 alias 'type=\\builtin whence -v'
 
-. "$HOME/.profile.d/ext.sh";
-. "$HOME/.profile.d/base.sh";
-. "$HOME/.profile.d/run.sh";
+. "$HOME/.profile.d/ext.sh"
+. "$HOME/.profile.d/base.sh"
+. "$HOME/.profile.d/run.sh"
 
-\ProfileRcBaseAlias;
+\ProfileRcBaseAlias
 
-\ProfileRcRunGpg 1>/dev/null;
-\ProfileRcRunKeychainInteractiv;
-\ProfileRcRunLsSet;
+\ProfileRcRunGpg 1>/dev/null
+\ProfileRcRunKeychainInteractiv
+\ProfileRcRunLsSet
 
 # vim: set ft=sh :
